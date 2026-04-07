@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weitblick – Webdesign & AI Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080b12;
+      --bg-2: #0d1220;
+      --bg-3: #121929;
+      --text: #e8eaf0;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --accent: #1a6ef5;
+      --accent-glow: rgba(26,110,245,0.15);
+      --accent-subtle: rgba(26,110,245,0.08);
+      --line: rgba(255,255,255,0.06);
+      --line-hover: rgba(255,255,255,0.12);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 60px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8,11,18,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .nav-cta {
+      font-size: 13px !important;
+      color: var(--accent) !important;
+      border: 1px solid rgba(26,110,245,0.35) !important;
+      padding: 8px 20px;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent) !important;
+      color: #fff !important;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(26,110,245,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    #hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(64px, 10vw, 130px);
+      font-weight: 800;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    #hero h1 em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    }
+
+    #hero h1 .accent-word {
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero-sub-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 60px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s forwards;
+    }
+
+    .hero-desc {
+      max-width: 400px;
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover { background: #1558d4; transform: translateY(-1px); }
+
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--text); }
+
+    .hero-badge {
+      margin-top: 80px;
+      padding-top: 40px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 48px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .badge-item { display: flex; flex-direction: column; gap: 4px; }
+    .badge-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .badge-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; }
+
+    /* ── SECTION BASE ── */
+    .section {
+      padding: 120px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 64px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .section-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    /* ── LEISTUNGEN ── */
+    #leistungen { border-top: 1px solid var(--line); }
+
+    .leistungen-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .leistung-card {
+      background: var(--bg);
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .leistung-card:hover { background: var(--bg-2); }
+
+    .leistung-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    .leistung-card:hover::after { width: 100%; }
+
+    .leistung-index {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .leistung-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .leistung-card p {
+      font-size: 15px;
+      color: var(--text-dim);
+      font-weight: 300;
+      line-height: 1.75;
+      max-width: 340px;
+    }
+
+    .leistung-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    .leistung-tag {
+      font-size: 11px;
+      padding: 5px 12px;
+      border: 1px solid var(--line-hover);
+      border-radius: 2px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── PROZESS ── */
+    #prozess { border-top: 1px solid var(--line); }
+    #prozess .section { max-width: 1100px; }
+
+    .prozess-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .prozess-step {
+      background: var(--bg);
+      padding: 40px 32px;
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 72px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .prozess-step h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .prozess-step p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── KONTAKT ── */
+    #kontakt { border-top: 1px solid var(--line); }
+
+    .kontakt-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .kontakt-left h2 { margin-bottom: 20px; }
+
+    .kontakt-left p {
+      font-size: 16px;
+      color: var(--text-dim);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .kontakt-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kontakt-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kontakt-detail-item .label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .kontakt-detail-item .val {
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--line-hover);
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      font-weight: 300;
+    }
+
+    form input::placeholder,
+    form textarea::placeholder { color: var(--text-muted); }
+
+    form input:focus,
+    form textarea:focus {
+      border-color: rgba(26,110,245,0.5);
+      background: var(--bg-3);
+    }
+
+    form textarea {
+      height: 140px;
+      resize: vertical;
+    }
+
+    form button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.2s;
+      align-self: flex-start;
+    }
+
+    form button:hover { background: #1558d4; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      nav ul { gap: 24px; }
+      #hero { padding: 100px 24px 60px; }
+      .section { padding: 80px 24px; }
+      #hero h1 { font-size: 64px; }
+      .hero-sub-row { flex-direction: column; gap: 32px; }
+      .leistungen-grid { grid-template-columns: 1fr; }
+      .prozess-steps { grid-template-columns: 1fr 1fr; }
+      .kontakt-wrap { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 24px; text-align: center; }
+      .hero-badge { gap: 32px; }
+    }
+
+    @media (max-width: 600px) {
+      nav ul .hide-mobile { display: none; }
+      #hero h1 { font-size: 52px; }
+      .prozess-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Weit<span>.</span>blick</a>
+    <ul>
+      <li class="hide-mobile"><a href="#leistungen">Leistungen</a></li>
+      <li class="hide-mobile"><a href="#prozess">Prozess</a></li>
+      <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Webdesign &amp; AI Automation — Norderstedt</div>
+
+      <h1>
+        <em>Deine</em>
+        <span class="accent-word">Praxis.</span>
+        Digital.
+      </h1>
+
+      <div class="hero-sub-row">
+        <p class="hero-desc">
+          Wir bauen Websites die Vertrauen aufbauen —
+          und automatisieren Prozesse die Zeit fressen.
+          Für lokale Praxen und Unternehmen die wachsen wollen.
+        </p>
+        <div class="hero-actions">
+          <a href="#kontakt" class="btn-primary">
+            Erstberatung anfragen
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#leistungen" class="btn-ghost">
+            Leistungen ansehen →
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-badge">
+        <div class="badge-item">
+          <span class="badge-num">100%</span>
+          <span class="badge-label">Maßgeschneidert</span>
+        </div>
+        <div class="badge-item">
+          <span class="badge-num">DSGVO</span>
+          <span class="badge-label">Konform</span>
+        </div>
+        <div class="badge-item">
+          <span class="badge-num">KI</span>
+          <span class="badge-label">Integriert</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEISTUNGEN -->
+  <div style="padding: 0 60px; max-width: 1220px; margin: 0 auto;">
+    <div style="border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 48px;" class="reveal">
+      <span class="section-label" id="leistungen">Leistungen</span>
+      <span class="section-num">01</span>
+    </div>
+    <div class="leistungen-grid reveal">
+      <div class="leistung-card">
+        <div class="leistung-index">WD — 01</div>
+        <h3>Web­design</h3>
+        <p>Moderne, schnelle Websites die Vertrauen aufbauen und neue Patienten oder Kunden gewinnen. Keine Templates — alles von Hand.</p>
+        <div class="leistung-tags">
+          <span class="leistung-tag">HTML / CSS</span>
+          <span class="leistung-tag">Responsive</span>
+          <span class="leistung-tag">SEO-Ready</span>
+          <span class="leistung-tag">DSGVO</span>
+        </div>
+      </div>
+      <div class="leistung-card">
+        <div class="leistung-index">AI — 02</div>
+        <h3>AI Auto­mation</h3>
+        <p>Automatisierte Prozesse die Zeit sparen — von Voicemail-Transkription bis Terminbuchung und Kundenkommunikation.</p>
+        <div class="leistung-tags">
+          <span class="leistung-tag">Make.com</span>
+          <span class="leistung-tag">Whisper AI</span>
+          <span class="leistung-tag">Placetel</span>
+          <span class="leistung-tag">Maßarbeit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROZESS -->
+  <div style="padding: 80px 60px 0; max-width: 1220px; margin: 0 auto;" id="prozess">
+    <div style="border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 48px;" class="reveal">
+      <span class="section-label">Prozess</span>
+      <span class="section-num">02</span>
+    </div>
+    <div class="prozess-steps reveal">
+      <div class="prozess-step">
+        <span class="step-num">01</span>
+        <h4>Kennen­lernen</h4>
+        <p>Kostenloses Erstgespräch. Wir verstehen dein Business, deine Ziele und deine Zielgruppe.</p>
+      </div>
+      <div class="prozess-step">
+        <span class="step-num">02</span>
+        <h4>Konzept</h4>
+        <p>Wir entwickeln Struktur, Design-Richtung und technischen Plan — bevor eine Zeile Code geschrieben wird.</p>
+      </div>
+      <div class="prozess-step">
+        <span class="step-num">03</span>
+        <h4>Umsetzung</h4>
+        <p>Sauberer Code, klares Design, regelmäßige Updates. Du siehst den Fortschritt von Anfang an.</p>
+      </div>
+      <div class="prozess-step">
+        <span class="step-num">04</span>
+        <h4>Launch &amp; Support</h4>
+        <p>Übergabe, Einweisung und laufende Betreuung. Wir sind auch nach dem Launch erreichbar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAKT -->
+  <div style="padding: 80px 60px; max-width: 1220px; margin: 0 auto;" id="kontakt">
+    <div style="border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 64px;" class="reveal">
+      <span class="section-label">Kontakt</span>
+      <span class="section-num">03</span>
+    </div>
+    <div class="kontakt-wrap reveal">
+      <div class="kontakt-left">
+        <h2>Lass uns<br>reden.</h2>
+        <p>Erstes Gespräch kostenlos und unverbindlich. Wir schauen gemeinsam was möglich ist — und was wirklich Sinn macht.</p>
+        <div class="kontakt-detail">
+          <div class="kontakt-detail-item">
+            <span class="label">Standort</span>
+            <span class="val">Norderstedt, Deutschland</span>
+          </div>
+          <div class="kontakt-detail-item">
+            <span class="label">Reaktionszeit</span>
+            <span class="val">Innerhalb von 24 Stunden</span>
+          </div>
+        </div>
+      </div>
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="15c72d29-bef5-489e-93c7-455608b3361a">
+        <input type="hidden" name="subject" value="Neue Anfrage über Weitblick Website">
+        <div class="form-row">
+          <input type="text" name="name" placeholder="Name" required>
+          <input type="email" name="email" placeholder="E-Mail" required>
+        </div>
+        <input type="text" name="unternehmen" placeholder="Unternehmen / Praxis">
+        <textarea name="nachricht" placeholder="Was kann Weitblick für dich tun?" required></textarea>
+        <button type="submit">Anfrage absenden →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Weit<span>.</span>blick</span>
+    <div class="footer-links">
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
+    <span class="footer-copy">© 2025 Weitblick</span>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
